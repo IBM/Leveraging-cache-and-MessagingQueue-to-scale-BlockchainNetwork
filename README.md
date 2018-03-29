@@ -1,6 +1,9 @@
-# Controlling flow of request to blockchain network using Redis and RabbitMQ cluster
+# Leveraging the Cache and Messaging Queue to Scale a Blockchain Network
 
 In this step, we will configure Redis and RabbitMQ cluster in our architecture to control the flow of incoming request to blockchain network. With the direct use of REST API calls, it is not possible to control the number of requests sent to blockchain network, this might cause errors such as read/write conflicts etc. In order to control the flow of request sent to blockchain network and scale our application, we will use RabbitMQ cluster with 3 nodes consisting of mirrored queues to queue the user requests and Redis cluster with 6 nodes (3 master and 3 slaves) where results of execution are store for a short duration. In architecture diagram, we have RabbitMQ producer present in API containers that queue the requests to RabbitMQ cluster and RabbitMQ consumers configured with an instance of Fabric-Node-SDK in Task execution containers to consume the requests from users and send it blockchain network for execution.
+
+You will find the configuration code for Redis in `./backend/utils/util.js`.
+You will find the configuration code for RabbitMQ in `./rabbitClient/utils/util.js`
 
 ## Included Components
 * Hyperledger Fabric
@@ -11,7 +14,7 @@ In this step, we will configure Redis and RabbitMQ cluster in our architecture t
 ## Application Workflow Diagram
 ![Application Workflow](images/arch.png)
 
-1. Issue a `git clone https://github.com/IBM/controlling-flow-ofRequests-toBlockchain-using-Redis-and-RabbitMQ.git`.
+1. Issue a `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git`.
 2. Issue the command `build.sh` to setup the network.
 
 ## Prerequisites
