@@ -15,6 +15,7 @@ You will find the configuration code for RabbitMQ in `./rabbitClient/utils/util.
 ![Application Workflow](images/arch.png)
 
 1. Issue a `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git`.
+
 2. Issue the command `build.sh` to setup the network.
 
 ## Prerequisites
