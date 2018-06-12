@@ -1,17 +1,19 @@
 # 캐싱과 메시지 대기열을 활용하여 블록체인 네트워크 확장하기
 
-이 단계에서는 아키텍처에서 Redis 및 RabbitMQ 클러스터를 구성하여 블록체인 네트워크로 들어오는 요청의 흐름을 제어합니다. REST API 호출을 직접 사용하면 블록체인 네트워크로 전송되는 요청 수를 제어 할 수 없어서 읽기/쓰기 충돌 등의 오류가 발생할 수 있습니다. 블록체인 네트워크로 전송되는 요청의 흐름을 제어하고 애플리케이션을 확장하기 위해, 우리는 3개 노드의 RabbitMQ 클러스터에 미러링된 대기열(Queue)를 구성하여 사용자 요청을 쌓습니다. 그리고 6개의 노드(마스터 3개와 슬레이브 3개)로 구성된 Redis 클러스터에 실행 결과를 잠깐 동안 저장할 수 있게 합니다. 아키텍처 다이어그램처럼 API 컨테이너의 RabbitMQ 생성자(producer)는 요청을 RabbitMQ 클러스터의 대기열에 보내고, Fabric-Node-SDK 인스턴스로 작성된 작업 실행 컨테이너(Task Execution Container)의 RabbitMQ 소비자(consumer)는 대기열에 쌓인 사용자의 요청을 블록체인 네트워크에 보냅니다.
+*다른 언어로 보기: [English](README.md).*
+
+이 단계에서는 아키텍처에서 Redis 및 RabbitMQ 클러스터를 구성하여 블록체인 네트워크로 들어오는 요청의 흐름을 제어합니다. REST API 호출을 직접 사용하면 블록체인 네트워크로 전송되는 요청 수를 제어할 수 없어서 읽기/쓰기 충돌 등의 오류가 발생할 수 있습니다. 블록체인 네트워크로 전송되는 요청의 흐름을 제어하고 애플리케이션을 확장하기 위해, 우리는 3개 노드의 RabbitMQ 클러스터에 미러링된 대기열(Queue)를 구성하여 사용자 요청을 쌓습니다. 그리고 6개의 노드(마스터 3개와 슬레이브 3개)로 구성된 Redis 클러스터에 실행 결과를 잠깐 동안 저장할 수 있게 합니다. 아키텍처 다이어그램처럼 API 컨테이너의 RabbitMQ 생성자(producer)는 요청을 RabbitMQ 클러스터의 대기열에 보내고, Fabric-Node-SDK 인스턴스로 작성된 작업 실행 컨테이너(Task Execution Container)의 RabbitMQ 소비자(consumer)는 대기열에 쌓인 사용자의 요청을 블록체인 네트워크에 보냅니다.
 
 Redis 설정코드 참조 `./backend/utils/util.js`
 
 RabbitMQ 설정코드 참조 `./rabbitClient/utils/util.js`
 
-## 포함된 컴포넌트
+## 포함된 구성요소
 * Hyperledger Fabric
 * Docker
 * Hyperledger Fabric SDK for node.js
 
-## 어플리케이션 흐름도
+## 애플리케이션 흐름도
 ![Application Workflow](images/arch.png)
 
 1. `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git` 명령을 실행하여 Git 저장소를 복제합니다.
@@ -28,9 +30,9 @@ RabbitMQ 설정코드 참조 `./rabbitClient/utils/util.js`
 
 
 ## 1. Build.sh 스크립트 실행
-다음 순서를 수행합니다:
+아래의 순서를 수행합니다:
 
-a. 기존에 존재하는 블록체인 도커 이미지를 삭제하여 시스템을 정리합니다.
+a. 기존에 존재하는 블록체인 도커(Docker) 이미지를 삭제하여 시스템을 정리합니다.
 
 b. 증명서를 발급합니다.
 
@@ -38,9 +40,9 @@ b. 증명서를 발급합니다.
 
 c. Peer, Orderer, Channel을 생성합니다.
 
-  * `configtx.yaml` 파일은 체인의 첫 블록인 Orderer 제네시스 블럭을 생성하여 블록체인 네트워크나 채널을 시작합니다. 그리고 각 채널 피어에 멤버십 서비스를 설치합니다. (이 경우엔 Shop 과 Fitcoin 피어)
+  * `configtx.yaml` 파일은 체인의 첫 블록인 Orderer 제네시스 블럭을 생성하여 블록체인 네트워크나 채널을 시작합니다. 그리고 각 채널 피어에 멤버십 서비스를 설치합니다(이 경우엔 Shop 과 Fitcoin 피어).
   
-d. Orderer, Peer, Channel, Network 의 도커 이미지를 생성합니다.
+d. Orderer, Peer, Channel, Network의 도커 이미지를 생성합니다.
 
 ## 새 터미널을 열어 다음 명령어 실행합니다.
 ```bash
@@ -140,13 +142,13 @@ Starting socker server
 npm install
 node index.js
 ```
-다음 URL 에 접속하여 블록체인 블록을 확인합니다. **http://localhost:8000/history.html**
+다음 URL에 접속하여 블록체인 블록을 확인합니다. **http://localhost:8000/history.html**
 
 ![Blocks](images/blocks.png)
 
-이제는 다음 URL 에서 블록체인 명령을 수행합니다. **http://localhost:8000/test.html**
+이제는 다음 URL에서 블록체인 명령을 수행합니다. **http://localhost:8000/test.html**
 
->참고 : 이 어플리케이션에서는 사용자 대기열 (User Queue) 에는 다음 중 하나의 값을 입력할 수 있습니다 : user_queue 또는 seller_queue
+>참고 : 이 애플리케이션에서는 사용자 대기열(User Queue)에는 다음 중 하나의 값을 입력할 수 있습니다 : user_queue 또는 seller_queue
 
 **사용자 등록 요청 예제**
 
