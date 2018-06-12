@@ -1,50 +1,50 @@
-# Leveraging the Cache and Messaging Queue to Scale a Blockchain Network
+# 캐싱과 메시지 대기열을 활용하여 블록체인 네트워크 확장하기
 
-*Read this in other languages: [한국어](README-ko.md).*
+*다른 언어로 보기: [English](README.md).*
 
-In this step, we will configure Redis and RabbitMQ cluster in our architecture to control the flow of incoming request to blockchain network. With the direct use of REST API calls, it is not possible to control the number of requests sent to blockchain network, this might cause errors such as read/write conflicts etc. In order to control the flow of request sent to blockchain network and scale our application, we will use RabbitMQ cluster with 3 nodes consisting of mirrored queues to queue the user requests and Redis cluster with 6 nodes (3 master and 3 slaves) where results of execution are store for a short duration. In architecture diagram, we have RabbitMQ producer present in API containers that queue the requests to RabbitMQ cluster and RabbitMQ consumers configured with an instance of Fabric-Node-SDK in Task execution containers to consume the requests from users and send it blockchain network for execution.
+이 단계에서는 아키텍처에서 Redis 및 RabbitMQ 클러스터를 구성하여 블록체인 네트워크로 들어오는 요청의 흐름을 제어합니다. REST API 호출을 직접 사용하면 블록체인 네트워크로 전송되는 요청 수를 제어할 수 없어서 읽기/쓰기 충돌 등의 오류가 발생할 수 있습니다. 블록체인 네트워크로 전송되는 요청의 흐름을 제어하고 애플리케이션을 확장하기 위해, 우리는 3개 노드의 RabbitMQ 클러스터에 미러링된 대기열(Queue)를 구성하여 사용자 요청을 쌓습니다. 그리고 6개의 노드(마스터 3개와 슬레이브 3개)로 구성된 Redis 클러스터에 실행 결과를 잠깐 동안 저장할 수 있게 합니다. 아키텍처 다이어그램처럼 API 컨테이너의 RabbitMQ 생성자(producer)는 요청을 RabbitMQ 클러스터의 대기열에 보내고, Fabric-Node-SDK 인스턴스로 작성된 작업 실행 컨테이너(Task Execution Container)의 RabbitMQ 소비자(consumer)는 대기열에 쌓인 사용자의 요청을 블록체인 네트워크에 보냅니다.
 
-You will find the configuration code for Redis in `./backend/utils/util.js`.
+Redis 설정코드 참조 `./backend/utils/util.js`
 
-You will find the configuration code for RabbitMQ in `./rabbitClient/utils/util.js`
+RabbitMQ 설정코드 참조 `./rabbitClient/utils/util.js`
 
-## Included Components
+## 포함된 구성요소
 * Hyperledger Fabric
 * Docker
 * Hyperledger Fabric SDK for node.js
 
-
-## Application Workflow Diagram
+## 애플리케이션 흐름도
 ![Application Workflow](images/arch.png)
 
-1. Issue a `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git`.
-2. Issue the command `build.sh` to setup the network.
+1. `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git` 명령을 실행하여 Git 저장소를 복제합니다.
+2. `build.sh` 명령으로 네트워크를 설정합니다.
 
-## Prerequisites
+## 사전 준비
 * [Docker](https://www.docker.com/products/overview) - v1.13 or higher
 * [Docker Compose](https://docs.docker.com/compose/overview/) - v1.8 or higher
 
-## Steps
-1. [Run Build.sh Script to build  and start the network](#1-run-the-build.sh-script)
-2. [Check the logs to see the results](#2-check-the-logs)
-3. [Test the Blockchain Network](#3-test-the-blockchainnetwork)
+## 순서
+1. [Build.sh를 실행하여 빌드하고 네트워크를 구동](#1-buildsh-스크립트-실행)
+2. [로그에서 결과 확인](#2-로그-확인)
+3. [블록체인 네트워크 테스트](#3-블록체인-네트워크-테스트)
 
-## 1. Run the Build.sh Script
-This accomplishes the following:
 
-a. Clean up system by removing any existing blockchain docker images
+## 1. Build.sh 스크립트 실행
+아래의 순서를 수행합니다:
 
-b. Generate certificates
+a. 기존에 존재하는 블록체인 도커(Docker) 이미지를 삭제하여 시스템을 정리합니다.
 
-  * The `crypto-config.yaml` (Crypto configuration file) defines the identity of "who is who". It tells peers and orderers what organization they belown to and what doman they belong to.
+b. 증명서를 발급합니다.
 
-c.  Create Peers, Orderers and Channel
+  * `crypto-config.yaml`(암호 설정파일)은 각 Peer와 Orderer가 어느 조직과 도메인에 속하는지 정의합니다.
 
-  * The `configtx.yaml` file initializes a blockchain network or channel and services with an Orderer Genesis Block which serves as the first block on a chain. Additionally, membership services are installed on each channel peer (in this case, the Shop and Fitcoin Peers).
+c. Peer, Orderer, Channel을 생성합니다.
 
-d. Build docker images of the orderer, peers, channel, network
+  * `configtx.yaml` 파일은 체인의 첫 블록인 Orderer 제네시스 블럭을 생성하여 블록체인 네트워크나 채널을 시작합니다. 그리고 각 채널 피어에 멤버십 서비스를 설치합니다(이 경우엔 Shop 과 Fitcoin 피어).
+  
+d. Orderer, Peer, Channel, Network의 도커 이미지를 생성합니다.
 
-### Open a new terminal and run the following command:
+## 새 터미널을 열어 다음 명령어 실행합니다.
 ```bash
 export FABRIC_CFG_PATH=$(pwd)
 chmod +x cryptogen
@@ -57,13 +57,14 @@ chmod +x clean.sh
 ./build.sh
 ```
 
-## 2. Check the logs
 
-**Command**
+## 2. 로그 확인
+
+**명령어**
 ```bash
 docker logs blockchain-setup
 ```
-**Output:**
+**결과:**
 ```bash
 CA registration complete
 CA registration complete
@@ -79,11 +80,11 @@ Successfully instantiated chaincode on all peers.
 Blockchain newtork setup complete.
 ```
 
-**Command**
+**명령어**
 ```bash
 docker ps
 ```
-**Output:**
+**결과:**
 ```bash
 f4ddfcb1e4d8        haproxy:1.7                                                                              "/docker-entrypoint.…"   5 minutes ago       Up 5 minutes        0.0.0.0:3000->3000/tcp                                rabbitclient
 5f40495511f1        backend                                                                                  "node index.js"          5 minutes ago       Up 5 minutes                                                              fitcoin_fitcoin-backend_1
@@ -108,11 +109,11 @@ b19022ef3b2a        ishangulhane/fabric-couchdb                                 
 9dba93e63b5c        ishangulhane/fabric-couchdb                                                              "tini -- /docker-ent…"   7 minutes ago       Up 7 minutes        4369/tcp, 9100/tcp, 0.0.0.0:8984->5984/tcp            fitcoin-statedb
 ```
 
-**Command**
+**명령어**
 ```bash
 docker logs fitcoin_fitcoin-backend_1
 ```
-**Output:**
+**결과:**
 ```
 CA registration complete
 CA registration complete
@@ -122,11 +123,11 @@ CA registration complete
 [x] Awaiting RPC requests on clientClient1
 ```
 
-**Command**
+**명령어**
 ```bash
 docker logs fitcoin_shop-backend_1
 ```
-**Output:**
+**결과:**
 ```
 CA registration complete
 CA registration complete
@@ -134,37 +135,37 @@ Starting socker server
 [x] Awaiting RPC requests on clientClient0
 ```
 
-## 3. Test the BlockchainNetwork
+## 3. 블록체인 네트워크 테스트
 
-In a separate terminal navigate to testApplication folder and run the following command:
+다른 터미널에서 testApplication 폴더로 이동하고 다음 명령을 실행합니다
 ```
 npm install
 node index.js
 ```
-Navigate to url to view the blockchain blocks: **http://localhost:8000/history.html**
+다음 URL에 접속하여 블록체인 블록을 확인합니다. **http://localhost:8000/history.html**
 
 ![Blocks](images/blocks.png)
 
-Now navigate to url to perform operations on network : **http://localhost:8000/test.html**
+이제는 다음 URL에서 블록체인 명령을 수행합니다. **http://localhost:8000/test.html**
 
->Note : For this application the user queue value can be either : user_queue or seller_queue
+>참고 : 이 애플리케이션에서는 사용자 대기열(User Queue)에는 다음 중 하나의 값을 입력할 수 있습니다 : user_queue 또는 seller_queue
 
-**Sample Enroll User request**
+**사용자 등록 요청 예제**
 
 ![Blocks](images/enroll.png)
 
-**Sample Query request**
+**조회(Query) 요청 예제**
 
 ![Blocks](images/query_user.png)
 
-**Sample Invoke request**
+**반영(Invoke) 요청 예제**
 
 ![Blocks](images/invoke_user.png)
 
-## Additional Resources
+## 추가 자료
 
 * [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/en/latest/)
 * [Hyperledger Composer Docs](https://hyperledger.github.io/composer/introduction/introduction.html)
 
-## License
+## 라이센스
 [Apache 2.0](LICENSE)
