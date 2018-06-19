@@ -36,7 +36,7 @@ a. Clean up system by removing any existing blockchain docker images
 
 b. Generate certificates
 
-  * The `crypto-config.yaml` (Crypto configuration file) defines the identity of "who is who". It tells peers and orderers what organization they belown to and what doman they belong to.
+  * The `crypto-config.yaml` (Crypto configuration file) defines the identity of "who is who". It tells peers and orderers what organization they belong to and what domain they belong to.
 
 c.  Create Peers, Orderers and Channel
 
@@ -76,7 +76,7 @@ info: [packager/Golang.js]: packaging GOLANG from bcfit
 info: [packager/Golang.js]: packaging GOLANG from bcfit
 Successfully installed chaincode on the default channel.
 Successfully instantiated chaincode on all peers.
-Blockchain newtork setup complete.
+Blockchain network setup complete.
 ```
 
 **Command**
@@ -168,3 +168,6 @@ Now navigate to url to perform operations on network : **http://localhost:8000/t
 
 ## License
 [Apache 2.0](LICENSE)
+
+
+
