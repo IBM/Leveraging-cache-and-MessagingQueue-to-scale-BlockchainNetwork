@@ -17,11 +17,11 @@ You will find the configuration code for RabbitMQ in `./rabbitClient/utils/util.
 ## Application Workflow Diagram
 ![Application Workflow](images/arch.png)
 
-1. Issue a `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork.git`.
+1. Issue a `git clone https://github.com/IBM/Leveraging-cache-and-MessagingQueue-to-scale-BlockchainNetwork`.
 2. Issue the command `build.sh` to setup the network.
 
 ## Prerequisites
-* [Docker](https://www.docker.com/products/overview) - v1.13 or higher
+* [Docker](https://www.docker.com/products) - v1.13 or higher
 * [Docker Compose](https://docs.docker.com/compose/overview/) - v1.8 or higher
 
 ## Steps
@@ -163,11 +163,11 @@ Now navigate to url to perform operations on network : **http://localhost:8000/t
 
 ## Additional Resources
 
-* [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/en/latest/)
-* [Hyperledger Composer Docs](https://hyperledger.github.io/composer/introduction/introduction.html)
+* [Hyperledger Fabric Docs](https://hyperledger-fabric.readthedocs.io/en/latest/)
+* [Hyperledger Composer Docs](https://hyperledger.github.io/composer/latest/introduction/introduction.html)
 
 ## License
-This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](http://www.apache.org/licenses/LICENSE-2.0.txt).
+This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
-[Apache Software License (ASL) FAQ](http://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
+[Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
 
