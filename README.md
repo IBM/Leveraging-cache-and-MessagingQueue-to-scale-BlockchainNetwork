@@ -36,7 +36,9 @@ a. Clean up system by removing any existing blockchain docker images
 
 b. Generate certificates
 
+
   * The `crypto-config.yaml` (Crypto configuration file) defines the identity of "who is who". It tells peers and orderers what organization they belown to and what domain they belong to.
+
 
 c.  Create Peers, Orderers and Channel
 
@@ -76,7 +78,7 @@ info: [packager/Golang.js]: packaging GOLANG from bcfit
 info: [packager/Golang.js]: packaging GOLANG from bcfit
 Successfully installed chaincode on the default channel.
 Successfully instantiated chaincode on all peers.
-Blockchain newtork setup complete.
+Blockchain network setup complete.
 ```
 
 **Command**
@@ -167,6 +169,7 @@ Now navigate to url to perform operations on network : **http://localhost:8000/t
 * [Hyperledger Composer Docs](https://hyperledger.github.io/composer/latest/introduction/introduction.html)
 
 ## License
+
 This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 [Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
